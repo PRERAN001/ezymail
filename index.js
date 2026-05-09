@@ -1,7 +1,7 @@
 async function send(data) {
 
    const res = await fetch(
-      "https://boating-gently-flight-royalty.trycloudflare.com//send",
+      "https://boating-gently-flight-royalty.trycloudflare.com/send",
       {
          method: "POST",
          headers: {

@@ -6,7 +6,9 @@ const { sendMail } = require("./lib/mailer");
 const app = express();
 
 app.use(express.json());
-
+app.get("/",(req,res)=>{
+   res.send("EzyMail API is running");
+})
 app.post("/send", async (req, res) => {
    try {
       const { from, to, subject, body } = req.body;
