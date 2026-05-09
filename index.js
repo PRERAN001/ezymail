@@ -1,7 +1,7 @@
 async function send(data) {
 
    const res = await fetch(
-      "https://your-render-url.onrender.com/send",
+      "https://ezymail.onrender.com/send",
       {
          method: "POST",
          headers: {

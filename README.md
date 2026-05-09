@@ -1,36 +1,36 @@
-
 # ezymail
 
-A minimal SMTP email sender built from scratch using Node.js sockets and TLS.
+A lightweight email-sending package built from scratch using raw SMTP, TLS, and Node.js sockets.
 
-No external dependencies. No abstractions. Just raw SMTP.
+No heavy dependencies. No SMTP wrappers. Just direct protocol-level email handling.
 
 ---
 
-## Features
+# Features
 
-- Direct SMTP communication (no third-party libraries)
-- STARTTLS support (secure email sending)
+- Raw SMTP communication
+- TLS-secured email sending
 - Promise-based API
-- Fully dynamic fields (from, to, subject, body)
-- Lightweight and simple
+- Supports plain text and HTML emails
+- Minimal and lightweight
+- Built for learning and experimentation
 
 ---
 
-## Installation
+# Installation
 
 ```bash
 npm install ezymail
-````
+```
 
 ---
 
-## Usage
+# Usage
 
 ```js
-const mailer = require("ezymail")
+const ezymail = require("ezymail");
 
-mailer.send({
+ezymail.send({
   from: "your@gmail.com",
   to: "receiver@gmail.com",
   subject: "Test Email",
@@ -38,98 +38,127 @@ mailer.send({
   user: "your@gmail.com",
   pass: "your_app_password"
 })
-.then(res => console.log(res))
-.catch(err => console.error(err))
+.then(console.log)
+.catch(console.error);
 ```
 
 ---
 
-## Parameters
+# Parameters
 
-| Field   | Type   | Required | Description                              |
-| ------- | ------ | -------- | ---------------------------------------- |
-| from    | string | Yes      | Sender email address                     |
-| to      | string | Yes      | Recipient email address                  |
-| subject | string | Yes      | Email subject                            |
-| body    | string | Yes      | Email body (plain text)                  |
-| user    | string | Yes      | SMTP username (usually same as `from`)   |
-| pass    | string | Yes      | SMTP password (App Password recommended) |
+| Field     | Type   | Required | Description |
+|-----------|--------|----------|-------------|
+| from      | string | Yes | Sender email address |
+| to        | string | Yes | Recipient email address |
+| subject   | string | Yes | Email subject |
+| body      | string | Yes | Email content |
+| user      | string | Yes | SMTP username |
+| pass      | string | Yes | SMTP password or App Password |
 
 ---
 
-## Gmail Setup
+# Gmail Setup
 
-To use with Gmail:
+To use Gmail SMTP:
 
 1. Enable 2-Step Verification
 2. Generate an App Password
-3. Use that App Password instead of your real password
+3. Use the App Password instead of your real password
+
+Google may block insecure or suspicious SMTP logins from some cloud platforms.
 
 ---
 
-## Example
+# Example
 
 ```js
-const { sendMail } = require("ezymail")
+const ezymail = require("ezymail");
 
-sendMail({
+ezymail.send({
   from: "your@gmail.com",
   to: "friend@gmail.com",
   subject: "Hello",
-  body: "This email was sent using raw SMTP",
+  body: "<h1>Hello from ezymail</h1>",
   user: "your@gmail.com",
-  pass: "app_password"
-})
+  pass: "your_app_password"
+});
 ```
 
 ---
 
-## How it works
+# How It Works
 
-This package implements the SMTP protocol manually:
+ezymail manually implements the SMTP protocol:
 
-1. Connects to SMTP server (TCP)
-2. Upgrades connection using STARTTLS
-3. Authenticates using base64 (AUTH LOGIN)
-4. Sends email using SMTP commands
-5. Closes connection
-
----
-
-## Limitations
-
-* Supports only plain text emails
-* No attachments (yet)
-* No HTML email support
-* No connection pooling
-* Basic error handling
+1. Connects to the SMTP server
+2. Establishes a TLS-secured connection
+3. Authenticates using `AUTH LOGIN`
+4. Sends SMTP commands directly
+5. Delivers the email
+6. Closes the connection
 
 ---
 
-## Why this package exists
+# Deployment Notes
 
-This is not meant to replace libraries like Nodemailer.
+Some serverless platforms block outbound SMTP ports such as:
 
-Instead, it is built for:
+- 25
+- 465
+- 587
 
-* Learning how SMTP works internally
-* Understanding low-level networking
-* Building custom email systems
+Because of this, raw SMTP may not work on platforms like:
+
+- Vercel
+- Netlify
+- Cloudflare Workers
+
+For production deployments, it is recommended to use:
+- VPS hosting
+- Dedicated servers
+- Or an API-based mail transport layer
 
 ---
 
-## Security Notes
+# Limitations
 
-* Do NOT use your real Gmail password
-* Always use App Passwords
-* Do not expose credentials in public repositories
+- No attachments yet
+- No connection pooling
+- Basic SMTP parsing
+- Limited provider compatibility
+- SMTP ports may be blocked on some cloud platforms
 
+---
 
+# Why This Package Exists
 
-## License
+ezymail is primarily built for:
+
+- Learning how SMTP works internally
+- Understanding TLS and sockets
+- Exploring low-level networking
+- Building custom mail infrastructure
+
+It is not intended to fully replace mature solutions like Nodemailer.
+
+---
+
+# Security Notes
+
+- Never expose SMTP credentials publicly
+- Always use App Passwords instead of your real password
+- Do not hardcode credentials inside source code
+- Use environment variables in production
+
+Example:
+
+```env
+EMAIL=your@gmail.com
+PASSWORD=your_app_password
+```
+
+---
+
+# License
 
 MIT
-
-```
-
----
