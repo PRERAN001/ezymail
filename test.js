@@ -1,6 +1,6 @@
-const ezymail = require("ezymail");
+const {send} = require("./index.js");
 
-ezymail.send({
+send({
   from: "preran248@gmail.com",
   to: "preran866@gmail.com",
   subject: "test mail lol",
