@@ -1,5 +1,17 @@
-const { sendMail } = require("./lib/mailer");
+async function send(data) {
 
-module.exports = {
-  send: sendMail
-};
+   const res = await fetch(
+      "https://your-render-url.onrender.com/send",
+      {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json"
+         },
+         body: JSON.stringify(data)
+      }
+   );
+
+   return res.json();
+}
+
+module.exports = { send };
