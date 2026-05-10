@@ -1,4 +1,15 @@
 async function send(data) {
+   const htmlContent = data?.html ?? data?.body;
+
+   if (!htmlContent) {
+      throw new Error("Missing content: provide html or body");
+   }
+
+   const payload = {
+      ...data,
+      html: htmlContent,
+      body: data?.body ?? htmlContent
+   };
 
    const res = await fetch(
       "https://racks-endangered-staffing-remark.trycloudflare.com/send",
@@ -7,7 +18,7 @@ async function send(data) {
          headers: {
             "Content-Type": "application/json"
          },
-         body: JSON.stringify(data)
+         body: JSON.stringify(payload)
       }
    );
 

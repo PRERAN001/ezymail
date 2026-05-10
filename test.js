@@ -1,10 +1,11 @@
 const {send} = require("./index.js");
 
-send({
-  from: "preran248@gmail.com",
-  to: "preran866@gmail.com",
-  subject: "test mail lol",
-  html: `<!DOCTYPE html>
+async function run() {
+  const payload = {
+    from: "preran248@gmail.com",
+    to: "preran866@gmail.com",
+    subject: "test mail lol",
+    html: `<!DOCTYPE html>
 <html>
   <body style="font-family: Arial; background:#f4f4f4; padding:20px;">
     <h1 style="color:#4f46e5;">🚀 EzyMail</h1>
@@ -16,4 +17,13 @@ send({
     </a>
   </body>
 </html>`
+  };
+
+  console.log("sending payload keys:", Object.keys(payload));
+  const result = await send(payload);
+  console.log("api response:", result);
+}
+
+run().catch((err) => {
+  console.error("test failed:", err?.message || String(err));
 });
