@@ -34,7 +34,7 @@ ezymail.send({
   from: "your@gmail.com",
   to: "receiver@gmail.com",
   subject: "Test Email",
-  body: "Hello from ezymail",
+  html: "<p>Hello from ezymail</p>",
   user: "your@gmail.com",
   pass: "your_app_password"
 })
@@ -51,7 +51,7 @@ ezymail.send({
 | from      | string | Yes | Sender email address |
 | to        | string | Yes | Recipient email address |
 | subject   | string | Yes | Email subject |
-| body      | string | Yes | Email content |
+| html      | string | Yes | Email content (sned html) |
 | user      | string | Yes | SMTP username |
 | pass      | string | Yes | SMTP password or App Password |
 
@@ -78,7 +78,7 @@ ezymail.send({
   from: "your@gmail.com",
   to: "friend@gmail.com",
   subject: "Hello",
-  body: "<h1>Hello from ezymail</h1>",
+  html: "<h1>Hello from ezymail</h1>",
   user: "your@gmail.com",
   pass: "your_app_password"
 });

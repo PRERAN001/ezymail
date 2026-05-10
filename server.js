@@ -11,14 +11,14 @@ app.get("/",(req,res)=>{
 })
 app.post("/send", async (req, res) => {
    try {
-      const { from, to, subject, body } = req.body;
-      console.log("from",from,"to",to,"subject",subject,"body",body)
+      const { from, to, subject, html } = req.body;
+      console.log("from",from,"to",to,"subject",subject,"html",html)
 
       const result = await sendMail({
          from,
          to,
          subject,
-         body
+         html
       });
 
       res.json({
