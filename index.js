@@ -12,7 +12,7 @@ async function send(data) {
    };
 
    const res = await fetch(
-      "https://racks-endangered-staffing-remark.trycloudflare.com/send",
+      "https://traditions-described-mark-swing.trycloudflare.com/send",
       {
          method: "POST",
          headers: {

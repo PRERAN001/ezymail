@@ -1,6 +1,6 @@
 {
   "name": "ezymail",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "A simple and easy-to-use email sending library for Node.js.",
   "main": "index.js",
   "scripts": {
