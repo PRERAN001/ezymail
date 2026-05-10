@@ -4,7 +4,7 @@ send({
   from: "preran248@gmail.com",
   to: "preran866@gmail.com",
   subject: "test mail lol",
-  body: `<!DOCTYPE html>
+  html: `<!DOCTYPE html>
 <html>
   <body style="font-family: Arial; background:#f4f4f4; padding:20px;">
     <h1 style="color:#4f46e5;">🚀 EzyMail</h1>

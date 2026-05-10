@@ -42,6 +42,17 @@ ezymail.send({
 .catch(console.error);
 ```
 
+If you call the HTTP API directly, send valid JSON with double-quoted keys:
+
+```json
+{
+  "from": "your@gmail.com",
+  "to": "receiver@gmail.com",
+  "subject": "Hello",
+  "html": "<h1>Hello from ezymail</h1>"
+}
+```
+
 ---
 
 # Parameters
@@ -52,6 +63,7 @@ ezymail.send({
 | to        | string | Yes | Recipient email address |
 | subject   | string | Yes | Email subject |
 | html      | string | Yes | Email content (sned html) |
+| body      | string | No  | Alias for `html` when using the HTTP API |
 | user      | string | Yes | SMTP username |
 | pass      | string | Yes | SMTP password or App Password |
 
