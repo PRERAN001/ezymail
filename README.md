@@ -38,8 +38,7 @@ ezymail.send({
   user: "your@gmail.com",
   pass: "your_app_password"
 })
-.then(console.log)
-.catch(console.error);
+
 ```
 
 If you call the HTTP API directly, send valid JSON with double-quoted keys:
