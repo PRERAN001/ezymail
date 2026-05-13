@@ -1,5 +1,6 @@
-# ezymail
 
+# ezymail
+<img width="2172" height="724" alt="ChatGPT Image May 13, 2026, 01_16_44 PM" src="https://github.com/user-attachments/assets/80e26d60-a74b-4a7c-891c-924ad7fdfd5a" />
 A lightweight email-sending package built from scratch using raw SMTP, TLS, and Node.js sockets.
 
 No heavy dependencies. No SMTP wrappers. Just direct protocol-level email handling.
