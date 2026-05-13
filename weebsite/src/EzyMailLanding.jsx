@@ -424,7 +424,7 @@ export default function EzyMailLanding() {
             className="absolute right-[-20px] bottom-[-40px] font-['Syne',sans-serif] font-black leading-none pointer-events-none select-none"
             style={{ fontSize: 180, color: "rgba(255,255,255,0.025)", letterSpacing: "-0.06em" }}
           >
-            798
+            1100
           </span>
           <p className="text-[11px] tracking-[0.2em] uppercase text-[#444] mb-6 relative z-10">
             Open source · ISC license · v2.0.1
