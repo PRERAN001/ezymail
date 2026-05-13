@@ -95,9 +95,9 @@ const features = [
 ];
 
 const marqueeItems = [
-  "798 Weekly Downloads", "v2.0.1 Stable", "SMTP Protocol", "TLS Encryption",
+  "1100 Weekly Downloads", "v2.0.1 Stable", "SMTP Protocol", "TLS Encryption",
   "2 Dependencies", "ISC License", "15 Versions", "Promise-based API",
-  "798 Weekly Downloads", "v2.0.1 Stable", "SMTP Protocol", "TLS Encryption",
+  "1100 Weekly Downloads", "v2.0.1 Stable", "SMTP Protocol", "TLS Encryption",
   "2 Dependencies", "ISC License", "15 Versions", "Promise-based API",
 ];
 
@@ -165,6 +165,7 @@ export default function EzyMailLanding() {
             <span className="w-[6px] h-[6px] rounded-full bg-[#e8ff6b] animate-[pulse-dot_2s_ease_infinite]" />
             v2.0.1 — Live on npm
           </div>
+          <div></div>
           <div className="hidden md:flex gap-8 text-right text-[11px] text-[#666] tracking-[0.08em]">
             {[["798+", "Weekly Downloads"], ["2.0.1", "Latest Version"], ["ISC", "License"]].map(([val, label]) => (
               <div key={label}>
@@ -175,6 +176,7 @@ export default function EzyMailLanding() {
           </div>
         </div>
 
+            <div></div>
         {/* Hero copy */}
         <div className="relative z-10 max-w-4xl" style={{ animation: "fadeUp 0.9s 0.2s ease both" }}>
           <p className="text-[11px] tracking-[0.2em] uppercase text-[#666] mb-6">
@@ -191,7 +193,7 @@ export default function EzyMailLanding() {
           <p className="text-[15px] text-[#666] leading-[1.7] max-w-[520px] mb-12 font-light">
             Direct SMTP over raw TLS sockets. No Nodemailer. No abstraction layers. No bloat.
             Just the protocol — and{" "}
-            <span className="text-[#e8ff6b]">798+ developers</span> who already get it.
+            <span className="text-[#e8ff6b]">1100+ developers</span> who already get it.
           </p>
           <div className="flex items-center gap-5 flex-wrap">
             <button
@@ -240,7 +242,7 @@ export default function EzyMailLanding() {
         {/* Animated count cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.07] border border-white/[0.07]">
           {[
-            { value: 798,  suffix: "+",  label: "Weekly Downloads",    sub: "and climbing" },
+            { value: 1100,  suffix: "+",  label: "Weekly Downloads",    sub: "and climbing" },
             { value: 15,   suffix: "",   label: "Published Versions",   sub: "actively maintained" },
             { value: 2,    suffix: "",   label: "Dependencies",         sub: "that's it. seriously." },
             { value: 0,    suffix: "",   label: "SMTP Wrappers",        sub: "protocol-direct only" },
@@ -343,7 +345,7 @@ export default function EzyMailLanding() {
             <span>{"  html: "}</span>
             <span className="text-[#a5d6ff]">{"` <h1>It works.</h1> `"}</span>
             <span>{"\n})\n\n"}</span>
-            <span className="text-[#444]">{"// ✓ 798+ devs can't be wrong"}</span>
+            <span className="text-[#444]">{"// ✓ 1100+ devs can't be wrong"}</span>
             <span className="inline-block w-[2px] h-[14px] bg-[#e8ff6b] animate-[blink_1s_step-end_infinite] align-[-2px] ml-[2px]" />
           </pre>
           <div
@@ -398,7 +400,7 @@ export default function EzyMailLanding() {
           </div>
           <div className="p-8 border border-[#e8ff6b] relative">
             <span className="absolute -top-px right-6 bg-[#e8ff6b] text-[#080808] text-[10px] font-medium tracking-[0.1em] uppercase px-3 py-1">
-              798+ devs choose this
+              1100+ devs choose this
             </span>
             <h3 className="font-['Syne',sans-serif] font-bold text-[18px] mb-6 text-[#e8ff6b]">EzyMail v2.0.1</h3>
             {compareRight.map((text, i) => (
@@ -431,7 +433,7 @@ export default function EzyMailLanding() {
             className="font-['Syne',sans-serif] font-black tracking-[-0.03em] leading-[1.05] max-w-[700px] mx-auto mb-6 relative z-10"
             style={{ fontSize: "clamp(32px,5vw,56px)" }}
           >
-            Join <em className="not-italic text-[#e8ff6b]">798+ developers</em> sending email the right way.
+            Join <em className="not-italic text-[#e8ff6b]">1100+ developers</em> sending email the right way.
           </h2>
           <p className="text-[15px] text-[#666] max-w-[440px] mx-auto mb-12 leading-[1.7] font-light relative z-10">
             One install. One function call. 15 versions of polish and counting.
