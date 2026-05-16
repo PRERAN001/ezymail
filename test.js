@@ -2,10 +2,9 @@ const {send} = require("./index.js");
 
 
 send({
-  from: "preran248@gmail.com",
-    to: "preran866@gmail.com",
-    subject: "checking the version 2.0.2 version of ezymail",
-    body:"hi there how are you doing???",
+  from: "preran866@gmail.com",
+    to: "preran248@gmail.com",
+    subject: "checking the version 2.0.2 version of ezymail",    
     html: `<!DOCTYPE html>
       <html>
         <body style="font-family: Arial; background:#f4f4f4; padding:20px;">

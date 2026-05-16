@@ -27,38 +27,32 @@ app.get("/",(req,res)=>{
 })
 app.post("/send", async (req, res) => {
    try {
-      const { from, to, subject, html, body } = req.body || {};
-      const content = html ?? body;
+      const { from, to, subject, html } = req.body || {};
+      
+      const content = html;
 
       if (!from || !to || !subject || !content) {
          return res.status(400).json({
             success: false,
-            error: "Missing required fields. Expected from, to, subject, and html (or body)."
+            error: "Missing required fields. Expected from, to, subject, and html."
          });
       }
-
-      console.log("from",from,"to",to,"subject",subject,"html",content)
 
       const result = await sendMail({
          from,
          to,
          subject,
-         html: content
-      }).then((d)=>{
-        if(d.status==200){
-            res.json({
-               success: true,
-               result
-            });
-        }
-      })
+         html: content,
+         
+      });
 
-      
-
+      return res.json({        // ← add return
+         success: true,
+         result
+      });
 
    } catch (err) {
-      console.log("error",err)
-      res.status(500).json({
+      return res.status(500).json({    // ← add return
          success: false,
          error: err?.message || String(err)
       });

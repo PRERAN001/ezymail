@@ -1,18 +1,19 @@
 async function send(data) {
-   const htmlContent = data?.html ?? data?.body;
+   const htmlContent = data?.html
+   console.log("content ",data)
 
    if (!htmlContent) {
-      throw new Error("Missing content: provide html or body");
+      throw new Error("Missing content: provide html");
    }
 
    const payload = {
       ...data,
       html: htmlContent,
-      body: data?.body ?? htmlContent
+      
    };
 
    const res = await fetch(
-      "http://54.90.254.81:3000/send",
+      "http://localhost:3000/send",
       {
          method: "POST",
          headers: {

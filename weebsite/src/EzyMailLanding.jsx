@@ -81,7 +81,7 @@ function EmailCard() {
         from: form.from,
         to: form.to,
         subject: form.subject,
-        body: form.body,
+        
         html: form.html || `<p>${form.body}</p>`,
       });
       setStatus("success");
@@ -150,10 +150,7 @@ function EmailCard() {
         </div>
 
         {/* Body */}
-        <div className="flex-1 px-4 py-3 border-r border-white/[0.06]">
-          <label className={labelClass}>Body <span className="text-[#2a2a2a] normal-case">plain text</span></label>
-          <input name="body" value={form.body} onChange={handleChange} placeholder="Plain text fallback..." className={inputClass} />
-        </div>
+       
 
         {/* Send button */}
         <div className="px-4 py-3 shrink-0">
