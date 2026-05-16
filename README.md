@@ -36,11 +36,15 @@ ezymail.send({
   from: "your@gmail.com",
   to: "receiver@gmail.com",
   subject: "Test Email",
-  body:"hi there how are you doing :)"
+  body:"hi there how are you doing :)",
   html: "<p>Hello from ezymail</p>",
   user: "your@gmail.com",
   pass: "your_app_password"
-})
+}).then(() => {
+  console.log("Email sent successfully!");
+}).catch((err) => {
+  console.error("Error sending email:", err);
+});
 
 ```
 
@@ -97,6 +101,10 @@ ezymail.send({
   body:"hi there how are you doing :)"
   user: "your@gmail.com",
   pass: "your_app_password"
+}).then(() => {
+  console.log("Email sent successfully!");
+}).catch((err) => {
+  console.error("Error sending email:", err);
 });
 ```
 

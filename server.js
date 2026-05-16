@@ -4,7 +4,11 @@ const express = require("express");
 const { sendMail } = require("./lib/mailer");
 
 const app = express();
+const cors = require('cors');
+app.use(cors()); 
 
+
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.use((err, req, res, next) => {
@@ -40,12 +44,16 @@ app.post("/send", async (req, res) => {
          to,
          subject,
          html: content
-      });
+      }).then((d)=>{
+        if(d.status==200){
+            res.json({
+               success: true,
+               result
+            });
+        }
+      })
 
-      res.json({
-         success: true,
-         result
-      });
+      
 
 
    } catch (err) {
