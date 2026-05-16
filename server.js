@@ -67,5 +67,5 @@ app.post("/send", async (req, res) => {
 
 app.listen(3000, () => {
    console.log("Server running");
-   console.log("v 1.2.1")
+   console.log("v 2.0.5")
 });
