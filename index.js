@@ -13,7 +13,7 @@ async function send(data) {
    };
 
    const res = await fetch(
-      "http://localhost:3000/send",
+      "http://54.90.254.81:3000/send",
       {
          method: "POST",
          headers: {

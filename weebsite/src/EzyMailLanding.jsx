@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import ezymail from "ezymail";
 
 // ─── Easy-to-change config ─────────────────────────────────────────────────
-const VERSION = "2.0.1";
+const VERSION = "2.0.6";
 const USER_COUNT = 1100; // weekly downloads / user count shown across the page
 // ───────────────────────────────────────────────────────────────────────────
 
@@ -61,112 +61,7 @@ function CountUp({ target, suffix = "", duration = 1800 }) {
 }
 
 // ─── Horizontal Email Card (full-width, bottom of hero) ────────────────────
-function EmailCard() {
-  const [form, setForm] = useState({ from: "", to: "", subject: "", body: "", html: "" });
-  const [status, setStatus] = useState(null); // null | "sending" | "success" | "error"
-  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-
-  const handleSubmit = async () => {
-    if (!form.from || !form.to || !form.subject) {
-      setStatus("error");
-      setErrorMsg("From, To, and Subject are required.");
-      return;
-    }
-    setStatus("sending");
-    setErrorMsg("");
-    try {
-      await ezymail.send({
-        from: form.from,
-        to: form.to,
-        subject: form.subject,
-        
-        html: form.html || `<p>${form.body}</p>`,
-      });
-      setStatus("success");
-    } catch (err) {
-      setStatus("error");
-      setErrorMsg(err?.message || "Failed to send. Check credentials.");
-    }
-  };
-
-  const inputClass =
-    "w-full bg-[#080808] border border-white/10 text-[#f0ede8] font-['DM_Mono',monospace] text-[11px] px-3 py-[8px] outline-none focus:border-[#e8ff6b]/50 transition-colors duration-200 placeholder-[#2a2a2a] tracking-[0.04em]";
-
-  const labelClass = "block text-[9px] tracking-[0.18em] uppercase text-[#444] mb-[5px] font-['DM_Mono',monospace]";
-
-  return (
-    <div
-      className="w-full border border-white/10 bg-[#0a0a0a]/95 backdrop-blur-xl relative overflow-hidden"
-      style={{ boxShadow: "0 0 80px rgba(232,255,107,0.03), 0 -1px 0 rgba(232,255,107,0.15)" }}
-    >
-      {/* Top accent line */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#e8ff6b]/50 to-transparent" />
-
-      {/* Header bar */}
-      <div className="flex items-center justify-between px-6 py-[10px] border-b border-white/[0.06]">
-        <div className="flex items-center gap-2">
-          <span className="w-[5px] h-[5px] rounded-full bg-[#e8ff6b] animate-[pulse-dot_2s_ease_infinite]" />
-          <span className="text-[9px] tracking-[0.18em] uppercase text-[#e8ff6b] font-['DM_Mono',monospace]">
-            Live Send Test
-          </span>
-        </div>
-        <div className="flex items-center gap-4">
-          {status === "success" && (
-            <span className="text-[9px] tracking-[0.12em] text-[#e8ff6b]">✓ Sent successfully</span>
-          )}
-          {status === "error" && (
-            <span className="text-[9px] tracking-[0.12em] text-[#ff6b6b]">✗ {errorMsg}</span>
-          )}
-          <span className="text-[9px] text-[#2a2a2a] tracking-[0.08em]">v{VERSION} · Raw SMTP</span>
-        </div>
-      </div>
-
-      {/* All inputs in one horizontal row */}
-      <div className="flex items-end gap-0">
-        {/* From */}
-        <div className="flex-1 px-4 py-3 border-r border-white/[0.06]">
-          <label className={labelClass}>From</label>
-          <input name="from" value={form.from} onChange={handleChange} placeholder="you@gmail.com" className={inputClass} />
-        </div>
-
-        {/* To */}
-        <div className="flex-1 px-4 py-3 border-r border-white/[0.06]">
-          <label className={labelClass}>To</label>
-          <input name="to" value={form.to} onChange={handleChange} placeholder="them@example.com" className={inputClass} />
-        </div>
-
-        {/* Subject */}
-        <div className="flex-1 px-4 py-3 border-r border-white/[0.06]">
-          <label className={labelClass}>Subject</label>
-          <input name="subject" value={form.subject} onChange={handleChange} placeholder="Hello from EzyMail!" className={inputClass} />
-        </div>
-
-        {/* HTML */}
-        <div className="flex-1 px-4 py-3 border-r border-white/[0.06]">
-          <label className={labelClass}>HTML <span className="text-[#2a2a2a] normal-case">optional</span></label>
-          <input name="html" value={form.html} onChange={handleChange} placeholder="<h1>It works.</h1>" className={inputClass} />
-        </div>
-
-        {/* Body */}
-       
-
-        {/* Send button */}
-        <div className="px-4 py-3 shrink-0">
-          <div className="mb-[5px] h-[13px]" /> {/* spacer to align with labels */}
-          <button
-            onClick={handleSubmit}
-            disabled={status === "sending"}
-            className="bg-[#e8ff6b] text-[#080808] border-none px-6 py-[8px] font-['DM_Mono',monospace] text-[10px] font-medium tracking-[0.12em] uppercase cursor-pointer hover:bg-white transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
-          >
-            {status === "sending" ? "Sending…" : "Send →"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const features = [
@@ -300,9 +195,7 @@ export default function EzyMailLanding() {
           </div>
 
           {/* Right: email card, vertically centered */}
-          <div className="relative z-10 flex-1 min-w-0" style={{ animation: "fadeUp 0.9s 0.45s ease both" }}>
-            <EmailCard />
-          </div>
+          
 
         </div>
       </section>
