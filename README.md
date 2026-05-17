@@ -35,16 +35,11 @@ const ezymail = require("ezymail");
 ezymail.send({
   from: "your@gmail.com",
   to: "receiver@gmail.com",
-  subject: "Test Email",
-  body:"hi there how are you doing :)",
+  subject: "Test Email",  
   html: "<p>Hello from ezymail</p>",
   user: "your@gmail.com",
   pass: "your_app_password"
-}).then(() => {
-  console.log("Email sent successfully!");
-}).catch((err) => {
-  console.error("Error sending email:", err);
-});
+})
 
 ```
 
@@ -55,7 +50,6 @@ If you call the HTTP API directly, send valid JSON with double-quoted keys:
   "from": "your@gmail.com",
   "to": "receiver@gmail.com",
   "subject": "Hello",
-  "body":"hi there how are you doing :)",
   "html": "<h1>Hello from ezymail</h1>"
 }
 ```
@@ -70,7 +64,6 @@ If you call the HTTP API directly, send valid JSON with double-quoted keys:
 | to        | string | Yes | Recipient email address |
 | subject   | string | Yes | Email subject |
 | html      | string | Yes | Email content (sned html) |
-| body      | string | No  | plain text  |
 | user      | string | Yes | SMTP username |
 | pass      | string | Yes | SMTP password or App Password |
 
@@ -98,14 +91,9 @@ ezymail.send({
   to: "friend@gmail.com",
   subject: "Hello",
   html: "<h1>Hello from ezymail</h1>",
-  body:"hi there how are you doing :)"
   user: "your@gmail.com",
   pass: "your_app_password"
-}).then(() => {
-  console.log("Email sent successfully!");
-}).catch((err) => {
-  console.error("Error sending email:", err);
-});
+})
 ```
 
 ---
