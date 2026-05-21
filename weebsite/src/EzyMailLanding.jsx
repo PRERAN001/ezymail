@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import ezymail from "ezymail";
+
 
 // ─── Easy-to-change config ─────────────────────────────────────────────────
 const VERSION = "2.0.7";
