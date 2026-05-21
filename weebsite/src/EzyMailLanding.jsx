@@ -141,7 +141,7 @@ export default function EzyMailLanding() {
           </div>
           <div></div>
           <div className="hidden md:flex gap-8 text-right text-[11px] text-[#666] tracking-[0.08em]">
-            {[["798+", "Weekly Downloads"], [VERSION, "Latest Version"], ["ISC", "License"]].map(([val, label]) => (
+            {[["1350+", "Weekly Downloads"], [VERSION, "Latest Version"], ["ISC", "License"]].map(([val, label]) => (
               <div key={label}>
                 <strong className="block text-[20px] font-['Syne',sans-serif] font-bold text-[#f0ede8] mb-[2px] tracking-[-0.02em]">{val}</strong>
                 {label}
