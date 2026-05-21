@@ -20,5 +20,5 @@ send({
 }).then((d) => {console.log("Email sent successfully")
   console.log("email sent??",d)
 })
-.catch((err) => console.error("Failed to send email:", err));
+.catch((err) => console.error("Failed to send email:", err))
     
