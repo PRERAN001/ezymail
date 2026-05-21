@@ -1,6 +1,6 @@
 
 # ezymail
-<img width="2172" height="724" alt="ezymail" src="https://github.com/user-attachments/assets/a11798e2-f71d-4233-bbdf-4e826738dadb" />
+<img width="2172" height="724" alt="ezymail" src="./assets/ezy.png" />
 
 A lightweight email-sending package built from scratch using raw SMTP, TLS, and Node.js sockets.
 
