@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import ezymail from "ezymail";
 
 // ─── Easy-to-change config ─────────────────────────────────────────────────
-const VERSION = "2.0.6";
-const USER_COUNT = 1100; // weekly downloads / user count shown across the page
+const VERSION = "2.0.7";
+const USER_COUNT = 1400; // weekly downloads / user count shown across the page
 // ───────────────────────────────────────────────────────────────────────────
 
 function useReveal() {
