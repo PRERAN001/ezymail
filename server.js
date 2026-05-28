@@ -23,7 +23,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/",(req,res)=>{
-   res.send("EzyMail API is running v 2.0.5");
+   res.send("EzyMail API is running v 3.0.0");
 })
 app.post("/send", async (req, res) => {
    try {
