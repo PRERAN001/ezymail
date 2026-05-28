@@ -32,6 +32,7 @@ npm install ezymail
 ```js
 const ezymail = require("ezymail");
 
+
 ezymail.send({
   from: "your@gmail.com",
   to: "receiver@gmail.com",
@@ -40,8 +41,38 @@ ezymail.send({
   user: "your@gmail.com",
   pass: "your_app_password"
 })
+// For sequential/concurrent bulk mail sending :)
+const data = {
+  from: "your@gmail.com",
+  subject: "Test Email",
+  html: "<p>Hello from ezymail</p>",
+  user: "your@gmail.com",
+  pass: "your_app_password"
+}
+// "to" will automatically be taken from the users array
 
-```
+const users = [
+  "abc@gmail.com",
+  "123@gmail.com"
+]
+
+// Make sure to use your SMTP email and app password
+ezymail.sendseqmail(users, data, n)
+
+// n = maximum number of mails to send (cap on the users array)
+//
+// Internally, mails are processed in batches of 20,
+// with 5 mails sent concurrently within each batch.
+//
+// Example with 100 users, n = 60:
+// -> only the first 60 users are processed
+// -> split into 3 batches of 20
+// -> each batch sends 5 mails at a time until the batch is done
+// -> next batch starts only after the previous one completes
+//
+// sendseqmail takes each user from the users array,
+// combines it with the provided data,
+// and sends the mail to that respective user.
 
 If you call the HTTP API directly, send valid JSON with double-quoted keys:
 
@@ -94,6 +125,39 @@ ezymail.send({
   user: "your@gmail.com",
   pass: "your_app_password"
 })
+
+// For sequential/concurrent bulk mail sending :)
+const data = {
+  from: "your@gmail.com",
+  subject: "Test Email",
+  html: "<p>Hello from ezymail</p>",
+  user: "your@gmail.com",
+  pass: "your_app_password"
+}
+
+// "to" will automatically be taken from the users array
+const users = [
+  "abc@gmail.com",
+  "123@gmail.com"
+]
+
+// Make sure to use your SMTP email and app password
+ezymail.sendseqmail(users, data, n)
+
+// n = maximum number of mails to send (cap on the users array)
+//
+// Internally, mails are processed in batches of 20,
+// with 5 mails sent concurrently within each batch.
+//
+// Example with 100 users, n = 60:
+// -> only the first 60 users are processed
+// -> split into 3 batches of 20
+// -> each batch sends 5 mails at a time until the batch is done
+// -> next batch starts only after the previous one completes
+//
+// sendseqmail takes each user from the users array,
+// combines it with the provided data,
+// and sends the mail to that respective user.
 ```
 
 ---

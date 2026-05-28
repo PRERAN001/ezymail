@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-
 // ─── Easy-to-change config ─────────────────────────────────────────────────
 const VERSION = "2.0.7";
-const USER_COUNT = 1400; // weekly downloads / user count shown across the page
+const USER_COUNT = 1100; // weekly downloads / user count shown across the page
 // ───────────────────────────────────────────────────────────────────────────
 
 function useReveal() {
@@ -13,7 +12,9 @@ function useReveal() {
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) el.classList.add("opacity-100", "translate-y-0"); },
+      ([entry]) => {
+        if (entry.isIntersecting) el.classList.add("opacity-100", "translate-y-0");
+      },
       { threshold: 0.1 }
     );
     observer.observe(el);
@@ -21,6 +22,7 @@ function useReveal() {
   }, []);
   return ref;
 }
+
 function RevealDiv({ children, className = "", delay = 0 }) {
   const ref = useReveal();
   return (
@@ -33,6 +35,7 @@ function RevealDiv({ children, className = "", delay = 0 }) {
     </div>
   );
 }
+
 function CountUp({ target, suffix = "", duration = 1800 }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
@@ -40,73 +43,290 @@ function CountUp({ target, suffix = "", duration = 1800 }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started.current) {
-        started.current = true;
-        const start = Date.now();
-        const tick = () => {
-          const elapsed = Date.now() - start;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          setCount(Math.floor(eased * target));
-          if (progress < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }
-    }, { threshold: 0.5 });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = Date.now();
+          const tick = () => {
+            const elapsed = Date.now() - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.floor(eased * target));
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.5 }
+    );
     observer.observe(el);
     return () => observer.disconnect();
   }, [target, duration]);
-  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
 }
-
-// ─── Horizontal Email Card (full-width, bottom of hero) ────────────────────
-
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const features = [
-  { num: "01", title: "Raw SMTP", desc: "Speaks directly to SMTP servers via TLS sockets. No middleware, no wrappers, no surprises.", tag: "Protocol-level" },
-  { num: "02", title: "Minimal Deps", desc: "Tiny footprint, minimal dependencies. No supply chain risk, no audit nightmares.", tag: "Lightweight" },
-  { num: "03", title: "HTML Emails", desc: "Full MIME support. Send rich HTML with inline styles, custom layouts — anything a modern client renders.", tag: "MIME-compliant" },
-  { num: "04", title: "Promise-based API", desc: "Fully async/await compatible. Drop it into any modern Node.js workflow without friction.", tag: "Modern" },
-  { num: "05", title: "Flexible Deployment", desc: "VPS, cloud functions, Cloudflare tunnels. If it can open a socket, EzyMail runs.", tag: "Cloud ready" },
-  { num: "06", title: "Plain + HTML Text", desc: "Send both plain text and rich HTML. Full control over every byte that leaves your server.", tag: "DX-first" },
+  { num: "01", title: "Raw SMTP",         desc: "Speaks directly to SMTP servers via TLS sockets. No middleware, no wrappers, no surprises.",                               tag: "Protocol-level" },
+  { num: "02", title: "Minimal Deps",     desc: "Tiny footprint, minimal dependencies. No supply chain risk, no audit nightmares.",                                         tag: "Lightweight"    },
+  { num: "03", title: "HTML Emails",      desc: "Full MIME support. Send rich HTML with inline styles, custom layouts — anything a modern client renders.",                  tag: "MIME-compliant" },
+  { num: "04", title: "Promise-based API",desc: "Fully async/await compatible. Drop it into any modern Node.js workflow without friction.",                                  tag: "Modern"         },
+  { num: "05", title: "Flexible Deploy",  desc: "VPS, cloud functions, Cloudflare tunnels. If it can open a socket, EzyMail runs.",                                         tag: "Cloud ready"    },
+  { num: "06", title: "Plain + HTML Text",desc: "Send both plain text and rich HTML. Full control over every byte that leaves your server.",                                 tag: "DX-first"       },
+  { num: "07", title: "Bulk Sending",     desc: "sendseqmail() batches thousands of mails with configurable concurrency and a hard cap. No queue servers needed.",           tag: "New ✦"          },
 ];
+
 const marqueeItems = [
-  `${USER_COUNT} Weekly Downloads`, `v${VERSION} Stable`, "SMTP Protocol", "TLS Encryption",
-  "2 Dependencies", "ISC License", "15 Versions", "Promise-based API",
-  `${USER_COUNT} Weekly Downloads`, `v${VERSION} Stable`, "SMTP Protocol", "TLS Encryption",
-  "2 Dependencies", "ISC License", "15 Versions", "Promise-based API",
+  `${USER_COUNT}+ Weekly Downloads`, `v${VERSION} Stable`, "SMTP Protocol", "TLS Encryption",
+  "2 Dependencies", "ISC License", "15 Versions", "Bulk Sending",
+  `${USER_COUNT}+ Weekly Downloads`, `v${VERSION} Stable`, "SMTP Protocol", "TLS Encryption",
+  "2 Dependencies", "ISC License", "15 Versions", "Bulk Sending",
 ];
+
 const compareLeft = [
   [false, "Heavy deps & abstractions"],
   [false, "Opaque protocol internals"],
   [false, "~500KB installed size"],
   [false, "Hides SMTP from you"],
+  [false, "No built-in bulk batching"],
   [true,  "Battle-tested in production"],
   [true,  "Rich plugin ecosystem"],
 ];
+
 const compareRight = [
   "Minimal dependencies",
   "Direct socket communication",
   "Tiny, auditable footprint",
   "Full protocol visibility",
+  { text: "Built-in bulk batching", isNew: true },
   "Perfect for learning SMTP",
   "Clean, readable source",
 ];
+
+// ─── Hero Email Card ──────────────────────────────────────────────────────────
+function HeroCard() {
+  return (
+    <div className="flex-1 max-w-[520px] bg-[#111] border border-white/[0.07] relative overflow-hidden animate-[drift_6s_ease-in-out_infinite]">
+      <div className="flex items-center gap-2 px-5 py-[14px] border-b border-white/[0.07]">
+        <span className="w-2 h-2 rounded-full bg-[#ff5f57]" />
+        <span className="w-2 h-2 rounded-full bg-[#febc2e]" />
+        <span className="w-2 h-2 rounded-full bg-[#28c840]" />
+        <span className="text-[11px] text-[#444] tracking-[0.05em] ml-2">send-email.js</span>
+        <span className="ml-auto text-[10px] text-[#444] border border-white/[0.07] px-2 py-[2px]">
+          v{VERSION}
+        </span>
+      </div>
+      <pre className="p-7 text-[13px] leading-[2] text-[#aaa] overflow-x-auto font-['DM_Mono',monospace]">
+        <span className="text-[#444]">{"// npm i ezymail\n"}</span>
+        <span className="text-[#e8ff6b]">const </span>
+        <span>{"ezymail = "}</span>
+        <span className="text-[#79c0ff]">require</span>
+        <span className="text-[#a5d6ff]">{"('ezymail')\n\n"}</span>
+
+        <span className="text-[#444]">{"// ── single mail ──────────────────\n"}</span>
+        <span className="text-[#e8ff6b]">await </span>
+        <span>{"ezymail."}</span>
+        <span className="text-[#79c0ff]">send</span>
+        <span>{"({\n"}</span>
+        <span>{"  from:    "}</span><span className="text-[#a5d6ff]">{"'you@gmail.com'"}</span><span>{",\n"}</span>
+        <span>{"  to:      "}</span><span className="text-[#a5d6ff]">{"'them@gmail.com'"}</span><span>{",\n"}</span>
+        <span>{"  subject: "}</span><span className="text-[#a5d6ff]">{"'Hello'"}</span><span>{",\n"}</span>
+        <span>{"  html:    "}</span><span className="text-[#a5d6ff]">{"` <h1>It works.</h1> `"}</span><span>{"\n})\n\n"}</span>
+
+        <span className="text-[#444]">{"// ── bulk mail (new!) ───────────────\n"}</span>
+        <span className="text-[#e8ff6b]">await </span>
+        <span>{"ezymail."}</span>
+        <span className="text-[#79c0ff]">sendseqmail</span>
+        <span>{"(users, data, "}</span>
+        <span className="text-[#e8ff6b]">{"100"}</span>
+        <span>{")\n"}</span>
+        <span className="text-[#444]">{"// n = max sends · batches of 20 · 5 concurrent"}</span>
+        <span className="inline-block w-[2px] h-[14px] bg-[#e8ff6b] animate-[blink_1s_step-end_infinite] align-[-2px] ml-[2px]" />
+      </pre>
+      <div
+        className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 w-[200px] h-[80px] rounded-full pointer-events-none"
+        style={{ background: "rgba(232,255,107,0.06)", filter: "blur(30px)" }}
+      />
+    </div>
+  );
+}
+
+// ─── Bulk Mail Section ────────────────────────────────────────────────────────
+function BulkMailSection() {
+  const bulkSteps = [
+    { icon: "⚡", title: "Pass your users array",      desc: "Supply a list of recipient emails — ezymail handles the rest, one isolated task per user." },
+    { icon: "📦", title: "Batches of 20, auto-split",  desc: "Users are split into batches of 20. Batches run sequentially to avoid overwhelming your SMTP server." },
+    { icon: "🔀", title: "5 concurrent per batch",     desc: "Within each batch, 5 mails fire simultaneously. Each task owns its own frozen payload — no cross-contamination." },
+    { icon: "🔒", title: "n caps the total sends",     desc: "Pass n as the third argument to hard-limit how many users from the array get a mail. It sets totalMails — not concurrency." },
+  ];
+
+  return (
+    <section id="bulk" className="max-w-[1200px] mx-auto px-10 pb-[120px]">
+      <RevealDiv>
+        <div className="border border-[#e8ff6b]/25 bg-[#e8ff6b]/[0.02] p-16">
+          {/* Header */}
+          <div className="flex items-center justify-between flex-wrap gap-4 mb-12">
+            <div>
+              <p className="text-[11px] tracking-[0.2em] uppercase text-[#e8ff6b] mb-3">New Feature</p>
+              <h2 className="font-['Syne',sans-serif] font-black text-[36px] tracking-[-0.02em]">
+                Bulk Mail. Zero Overhead.{" "}
+                <span className="bg-[#e8ff6b] text-[#080808] text-[10px] font-medium tracking-[0.1em] uppercase px-[10px] py-[5px] align-middle">
+                  New
+                </span>
+              </h2>
+            </div>
+            <div className="text-[12px] text-[#666] text-right leading-[1.8]">
+              <span className="text-[#e8ff6b]">sendseqmail()</span> — batch + concurrent
+              <br />
+              One call. Thousands of mails.
+            </div>
+          </div>
+
+          {/* Grid */}
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Left: steps */}
+            <div>
+              <p className="text-[13px] text-[#666] leading-[1.8] font-light mb-8">
+                Send emails to thousands of users in controlled batches — with configurable concurrency
+                and a hard cap on total sends. No queue servers. No Redis. Just JavaScript.
+              </p>
+              <div className="flex flex-col">
+                {bulkSteps.map((s, i) => (
+                  <div
+                    key={i}
+                    className="flex gap-5 py-5 border-b border-white/[0.07] first:border-t first:border-white/[0.07]"
+                  >
+                    <div className="w-9 h-9 border border-[#e8ff6b]/30 flex items-center justify-center text-sm flex-shrink-0 text-[#e8ff6b]">
+                      {s.icon}
+                    </div>
+                    <div>
+                      <strong className="block text-[13px] text-[#f0ede8] font-medium mb-1">{s.title}</strong>
+                      <span className="text-[12px] text-[#666] font-light leading-[1.6]">{s.desc}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-3 flex-wrap mt-8">
+                {["Batched · 20/batch", "5 concurrent", "No queue server", "Isolated payloads"].map((b) => (
+                  <span
+                    key={b}
+                    className="text-[10px] tracking-[0.12em] uppercase border border-[#e8ff6b]/20 text-[#e8ff6b] px-[14px] py-[6px] bg-[#e8ff6b]/[0.04]"
+                  >
+                    {b}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: code + flow */}
+            <div>
+              <div className="bg-[#0d0d0d] border border-white/[0.07] overflow-hidden">
+                <div className="flex items-center gap-2 px-5 py-[12px] border-b border-white/[0.07] bg-[#111]">
+                  <span className="w-2 h-2 rounded-full bg-[#ff5f57]" />
+                  <span className="w-2 h-2 rounded-full bg-[#febc2e]" />
+                  <span className="w-2 h-2 rounded-full bg-[#28c840]" />
+                  <span className="text-[11px] text-[#444] ml-2">bulk-send.js</span>
+                </div>
+                <pre className="p-6 text-[12px] leading-[1.9] text-[#aaa] overflow-x-auto font-['DM_Mono',monospace]">
+                  <span className="text-[#e8ff6b]">const </span>
+                  <span>{"ezymail = "}</span>
+                  <span className="text-[#79c0ff]">require</span>
+                  <span className="text-[#a5d6ff]">{"('ezymail')\n\n"}</span>
+
+                  <span className="text-[#444]">{"// Your recipient list\n"}</span>
+                  <span className="text-[#e8ff6b]">const </span>
+                  <span>{"users = [\n"}</span>
+                  <span>{"  "}</span><span className="text-[#a5d6ff]">{"'alice@example.com'"}</span><span>{",\n"}</span>
+                  <span>{"  "}</span><span className="text-[#a5d6ff]">{"'bob@example.com'"}</span><span>{",\n"}</span>
+                  <span className="text-[#444]">{"  // ...thousands more\n"}</span>
+                  <span>{"]\n\n"}</span>
+
+                  <span className="text-[#444]">{"// Shared mail data\n"}</span>
+                  <span className="text-[#e8ff6b]">const </span>
+                  <span>{"data = {\n"}</span>
+                  <span>{"  from:    "}</span><span className="text-[#a5d6ff]">{"'you@gmail.com'"}</span><span>{",\n"}</span>
+                  <span>{"  subject: "}</span><span className="text-[#a5d6ff]">{"'Newsletter'"}</span><span>{",\n"}</span>
+                  <span>{"  html:    "}</span><span className="text-[#a5d6ff]">{"'<h1>Hello!</h1>'"}</span><span>{",\n"}</span>
+                  <span>{"  user:    "}</span><span className="text-[#a5d6ff]">{"'you@gmail.com'"}</span><span>{",\n"}</span>
+                  <span>{"  pass:    "}</span><span className="text-[#a5d6ff]">{"'app_password'"}</span><span>{"\n}\n\n"}</span>
+
+                  <span className="text-[#444]">{"// n = max emails to send from users array\n"}</span>
+                  <span className="text-[#444]">{"// batchSize=20, concurrency=5 are fixed\n"}</span>
+                  <span className="text-[#e8ff6b]">await </span>
+                  <span>{"ezymail."}</span>
+                  <span className="text-[#79c0ff]">sendseqmail</span>
+                  <span>{"(users, data, "}</span>
+                  <span className="text-[#e8ff6b]">100</span>
+                  <span>{")\n\n"}</span>
+
+                  <span className="text-[#444]">{"// only first 100 users are processed\n"}</span>
+                  <span className="text-[#444]">{"// ✓ Batch 1 completed  (users 1–20)\n"}</span>
+                  <span className="text-[#444]">{"// ✓ Batch 2 completed  (users 21–40)\n"}</span>
+                  <span className="text-[#444]">{"// ✓ Batch 3 completed  (users 41–60)\n"}</span>
+                  <span className="text-[#444]">{"// ✓ ..."}</span>
+                  <span className="inline-block w-[2px] h-[14px] bg-[#e8ff6b] animate-[blink_1s_step-end_infinite] align-[-2px] ml-[2px]" />
+                </pre>
+              </div>
+
+              {/* Execution flow */}
+              <div className="mt-4 border border-white/[0.07] p-5 font-['DM_Mono',monospace] text-[11px] leading-[2] text-[#666] tracking-[0.05em]">
+                <div className="text-[#e8ff6b] mb-2 tracking-[0.15em] uppercase text-[10px]">Execution Flow</div>
+                <div>
+                  <span className="text-[#f0ede8]">sendseqmail(users, data, </span>
+                  <span className="text-[#e8ff6b]">n</span>
+                  <span className="text-[#f0ede8]">)</span>
+                  <span className="text-[#333]">  ← n caps total sends</span>
+                </div>
+                <div className="pl-4 text-[#444]">
+                  └── MailQueue({"{ totalMails: "}
+                  <span className="text-[#e8ff6b]">n</span>
+                  {", batchSize: 20, concurrency: 5 }"}
+                  <span className="text-[#333]">  ← not concurrency</span>
+                  )
+                </div>
+                <div className="pl-8 text-[#444]">└── tasks = users.slice(0, <span className="text-[#e8ff6b]">n</span>).map(buildTask) <span className="text-[#333]">← frozen</span></div>
+                <div className="pl-8 text-[#444]">└── process(tasks) → split into batches of 20</div>
+                <div className="pl-12 text-[#444]">├── Batch 1 → 5 workers fire fetch() ✓</div>
+                <div className="pl-12 text-[#444]">├── Batch 2 → 5 workers fire fetch() ✓</div>
+                <div className="pl-12 text-[#444]">└── ...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </RevealDiv>
+    </section>
+  );
+}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function EzyMailLanding() {
   return (
     <div className="bg-[#080808] text-[#f0ede8] font-['DM_Mono',monospace] overflow-x-hidden min-h-screen">
+
       {/* ── NAV ── */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10 h-[60px] border-b border-white/[0.07] bg-[#080808]/90 backdrop-blur-xl text-[11px] tracking-[0.1em] uppercase">
         <span className="font-['Syne',sans-serif] font-black text-[18px] tracking-[-0.02em] normal-case">
           Ezy<span className="text-[#e8ff6b]">Mail</span>
         </span>
         <div className="hidden md:flex gap-8">
-          {[["Features", "#features"], ["Usage", "#usage"], ["Compare", "#compare"], ["GitHub", "https://github.com/PRERAN001/ezymail"]].map(([label, href]) => (
-            <a key={label} href={href} className="text-[#666] hover:text-[#f0ede8] transition-colors duration-200 no-underline">
+          {[
+            ["Features", "#features"],
+            ["Bulk Mail", "#bulk"],
+            ["Usage",    "#usage"],
+            ["Compare",  "#compare"],
+            ["GitHub",   "https://github.com/PRERAN001/ezymail"],
+          ].map(([label, href]) => (
+            <a
+              key={label}
+              href={href}
+              className="text-[#666] hover:text-[#f0ede8] transition-colors duration-200 no-underline"
+            >
               {label}
             </a>
           ))}
@@ -122,11 +342,15 @@ export default function EzyMailLanding() {
       {/* ── HERO ── */}
       <section className="min-h-screen relative overflow-hidden pt-[60px]">
         {/* Grid background */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)",
-        }} />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+            maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)",
+          }}
+        />
         {/* Scan line */}
         <div
           className="absolute left-0 right-0 h-[120px] pointer-events-none animate-[scan_5s_linear_infinite]"
@@ -139,20 +363,28 @@ export default function EzyMailLanding() {
             <span className="w-[6px] h-[6px] rounded-full bg-[#e8ff6b] animate-[pulse-dot_2s_ease_infinite]" />
             v{VERSION} — Live on npm
           </div>
-          <div></div>
+          <div />
           <div className="hidden md:flex gap-8 text-right text-[11px] text-[#666] tracking-[0.08em]">
-            {[["1350+", "Weekly Downloads"], [VERSION, "Latest Version"], ["ISC", "License"]].map(([val, label]) => (
+            {[
+              ["1,100+", "Weekly Downloads"],
+              [VERSION,  "Latest Version"],
+              ["ISC",    "License"],
+            ].map(([val, label]) => (
               <div key={label}>
-                <strong className="block text-[20px] font-['Syne',sans-serif] font-bold text-[#f0ede8] mb-[2px] tracking-[-0.02em]">{val}</strong>
+                <strong className="block text-[20px] font-['Syne',sans-serif] font-bold text-[#f0ede8] mb-[2px] tracking-[-0.02em]">
+                  {val}
+                </strong>
                 {label}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Hero body: left copy + right card, vertically centered */}
-        <div className="flex items-center justify-between gap-16 px-10 min-h-screen" style={{ animation: "fadeUp 0.9s 0.2s ease both" }}>
-
+        {/* Hero body */}
+        <div
+          className="flex items-center justify-between gap-16 px-10 min-h-screen"
+          style={{ animation: "fadeUp 0.9s 0.2s ease both" }}
+        >
           {/* Left: headline + description + buttons */}
           <div className="relative z-10 max-w-[520px] shrink-0">
             <p className="text-[11px] tracking-[0.2em] uppercase text-[#666] mb-6">
@@ -186,7 +418,7 @@ export default function EzyMailLanding() {
               </button>
             </div>
             <div className="flex gap-[10px] mt-8 flex-wrap">
-              {[`v${VERSION} stable`, "ISC license", "Promise-based", "TLS encrypted", "HTML + plain text"].map((p) => (
+              {[`v${VERSION} stable`, "ISC license", "Promise-based", "TLS encrypted", "Bulk sending", "HTML + plain text"].map((p) => (
                 <span key={p} className="text-[10px] tracking-[0.12em] uppercase text-[#444] border border-white/[0.07] px-3 py-[5px]">
                   {p}
                 </span>
@@ -194,9 +426,8 @@ export default function EzyMailLanding() {
             </div>
           </div>
 
-          {/* Right: email card, vertically centered */}
-          
-
+          {/* Right: hero email card */}
+          <HeroCard />
         </div>
       </section>
 
@@ -204,14 +435,17 @@ export default function EzyMailLanding() {
       <div className="border-t border-b border-white/[0.07] overflow-hidden py-[14px] bg-[#111]">
         <div className="flex whitespace-nowrap animate-[marquee_20s_linear_infinite]">
           {marqueeItems.map((item, i) => (
-            <div key={i} className="text-[11px] tracking-[0.2em] uppercase text-[#444] px-8 border-r border-white/[0.07] shrink-0">
+            <div
+              key={i}
+              className="text-[11px] tracking-[0.2em] uppercase text-[#444] px-8 border-r border-white/[0.07] shrink-0"
+            >
               <span className="text-[#e8ff6b] mr-3">◆</span>{item}
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── STATS SHOWOFF ── */}
+      {/* ── STATS ── */}
       <section className="max-w-[1200px] mx-auto px-10 py-[100px]">
         <RevealDiv className="text-center mb-16">
           <p className="text-[11px] tracking-[0.2em] uppercase text-[#e8ff6b] mb-3">By the numbers</p>
@@ -221,10 +455,10 @@ export default function EzyMailLanding() {
         </RevealDiv>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.07] border border-white/[0.07]">
           {[
-            { value: USER_COUNT, suffix: "+",  label: "Weekly Downloads",    sub: "and climbing" },
-            { value: 15,         suffix: "",   label: "Published Versions",   sub: "actively maintained" },
-            { value: 2,          suffix: "",   label: "Dependencies",         sub: "that's it. seriously." },
-            { value: 0,          suffix: "",   label: "SMTP Wrappers",        sub: "protocol-direct only" },
+            { value: USER_COUNT, suffix: "+", label: "Weekly Downloads",  sub: "and climbing"           },
+            { value: 15,         suffix: "",  label: "Published Versions", sub: "actively maintained"   },
+            { value: 2,          suffix: "",  label: "Dependencies",       sub: "that's it. seriously." },
+            { value: 0,          suffix: "",  label: "SMTP Wrappers",      sub: "protocol-direct only"  },
           ].map(({ value, suffix, label, sub }, i) => (
             <RevealDiv
               key={label}
@@ -246,7 +480,10 @@ export default function EzyMailLanding() {
             </RevealDiv>
           ))}
         </div>
-        <RevealDiv delay={200} className="mt-6 border border-[#e8ff6b]/20 p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-[#e8ff6b]/[0.02]">
+        <RevealDiv
+          delay={200}
+          className="mt-6 border border-[#e8ff6b]/20 p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-[#e8ff6b]/[0.02]"
+        >
           <div className="flex items-center gap-4">
             <span className="w-2 h-2 rounded-full bg-[#e8ff6b] animate-[pulse-dot_2s_ease_infinite] shrink-0" />
             <div>
@@ -269,6 +506,9 @@ export default function EzyMailLanding() {
         </RevealDiv>
       </section>
 
+      {/* ── BULK MAIL (NEW FEATURE) ── */}
+      <BulkMailSection />
+
       {/* ── USAGE ── */}
       <section id="usage" className="max-w-[1200px] mx-auto px-10 pb-[120px] grid lg:grid-cols-2 gap-20 items-center">
         <RevealDiv>
@@ -281,11 +521,15 @@ export default function EzyMailLanding() {
           </p>
           <div className="mt-8 flex flex-col">
             {[
-              ["01", "Install the package",    "npm i ezymail — minimal deps, nothing extra"],
-              ["02", "Set your credentials",   "Gmail address + app password from Google"],
-              ["03", "Call ezymail.send()",     "Async, awaitable, delivered"],
+              ["01", "Install the package",       "npm i ezymail — minimal deps, nothing extra"],
+              ["02", "Set your credentials",      "Gmail address + app password from Google"],
+              ["03", "Call ezymail.send()",        "Async, awaitable, delivered"],
+              ["04", "Scale with sendseqmail()",  "Bulk sending — batched, concurrent, capped"],
             ].map(([num, title, sub]) => (
-              <div key={num} className="flex items-start gap-4 py-4 border-b border-white/[0.07] first:border-t first:border-white/[0.07]">
+              <div
+                key={num}
+                className="flex items-start gap-4 py-4 border-b border-white/[0.07] first:border-t first:border-white/[0.07]"
+              >
                 <span className="text-[11px] text-[#444] tracking-[0.1em] min-w-[24px] pt-[2px]">{num}</span>
                 <div>
                   <strong className="block text-[13px] text-[#f0ede8] mb-[2px] font-medium">{title}</strong>
@@ -295,13 +539,18 @@ export default function EzyMailLanding() {
             ))}
           </div>
         </RevealDiv>
-        <RevealDiv delay={150} className="bg-[#111] border border-white/[0.07] overflow-hidden relative animate-[drift_6s_ease-in-out_infinite]">
+        <RevealDiv
+          delay={150}
+          className="bg-[#111] border border-white/[0.07] overflow-hidden relative animate-[drift_6s_ease-in-out_infinite]"
+        >
           <div className="flex items-center gap-2 px-5 py-[14px] border-b border-white/[0.07]">
             <span className="w-2 h-2 rounded-full bg-[#ff5f57]" />
             <span className="w-2 h-2 rounded-full bg-[#febc2e]" />
             <span className="w-2 h-2 rounded-full bg-[#28c840]" />
             <span className="text-[11px] text-[#444] tracking-[0.05em] ml-2">send-email.js</span>
-            <span className="ml-auto text-[10px] text-[#444] border border-white/[0.07] px-2 py-[2px]">v{VERSION}</span>
+            <span className="ml-auto text-[10px] text-[#444] border border-white/[0.07] px-2 py-[2px]">
+              v{VERSION}
+            </span>
           </div>
           <pre className="p-7 text-[13px] leading-[2] text-[#aaa] overflow-x-auto font-['DM_Mono',monospace]">
             <span className="text-[#444]">{"// npm i ezymail\n"}</span>
@@ -333,7 +582,7 @@ export default function EzyMailLanding() {
       <section id="features" className="max-w-[1200px] mx-auto px-10 pb-[120px]">
         <RevealDiv className="flex items-end justify-between mb-12">
           <h2 className="font-['Syne',sans-serif] font-black text-[36px] tracking-[-0.02em]">What's inside.</h2>
-          <span className="text-[11px] text-[#444] tracking-[0.15em] uppercase">06 features</span>
+          <span className="text-[11px] text-[#444] tracking-[0.15em] uppercase">07 features</span>
         </RevealDiv>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.07] border border-white/[0.07]">
           {features.map((f, i) => (
@@ -363,25 +612,48 @@ export default function EzyMailLanding() {
           </h2>
         </RevealDiv>
         <RevealDiv delay={100} className="grid md:grid-cols-2 gap-6">
+          {/* Nodemailer col */}
           <div className="p-8 border border-white/[0.07]">
             <h3 className="font-['Syne',sans-serif] font-bold text-[18px] mb-6">Nodemailer</h3>
             {compareLeft.map(([ok, text], i) => (
-              <div key={i} className="flex items-center gap-3 py-[10px] border-b border-white/[0.07] last:border-b-0 text-[13px] text-[#666] font-light">
+              <div
+                key={i}
+                className="flex items-center gap-3 py-[10px] border-b border-white/[0.07] last:border-b-0 text-[13px] text-[#666] font-light"
+              >
                 <span className={ok ? "text-[#e8ff6b] font-medium" : "text-[#ff6b6b]"}>{ok ? "✓" : "✗"}</span>
                 {text}
               </div>
             ))}
           </div>
+          {/* EzyMail col */}
           <div className="p-8 border border-[#e8ff6b] relative">
             <span className="absolute -top-px right-6 bg-[#e8ff6b] text-[#080808] text-[10px] font-medium tracking-[0.1em] uppercase px-3 py-1">
               {USER_COUNT}+ devs choose this
             </span>
-            <h3 className="font-['Syne',sans-serif] font-bold text-[18px] mb-6 text-[#e8ff6b]">EzyMail v{VERSION}</h3>
-            {compareRight.map((text, i) => (
-              <div key={i} className="flex items-center gap-3 py-[10px] border-b border-white/[0.07] last:border-b-0 text-[13px] text-[#666] font-light">
-                <span className="text-[#e8ff6b] font-medium">✓</span>{text}
-              </div>
-            ))}
+            <h3 className="font-['Syne',sans-serif] font-bold text-[18px] mb-6 text-[#e8ff6b]">
+              EzyMail v{VERSION}
+            </h3>
+            {compareRight.map((item, i) => {
+              const isObj = typeof item === "object";
+              return (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 py-[10px] border-b border-white/[0.07] last:border-b-0 text-[13px] text-[#666] font-light"
+                >
+                  <span className="text-[#e8ff6b] font-medium">✓</span>
+                  {isObj ? (
+                    <>
+                      {item.text}
+                      <span className="bg-[#e8ff6b] text-[#080808] text-[9px] font-medium tracking-[0.1em] uppercase px-[6px] py-[2px] ml-1">
+                        New
+                      </span>
+                    </>
+                  ) : (
+                    item
+                  )}
+                </div>
+              );
+            })}
           </div>
         </RevealDiv>
       </section>
@@ -406,10 +678,12 @@ export default function EzyMailLanding() {
             className="font-['Syne',sans-serif] font-black tracking-[-0.03em] leading-[1.05] max-w-[700px] mx-auto mb-6 relative z-10"
             style={{ fontSize: "clamp(32px,5vw,56px)" }}
           >
-            Join <em className="not-italic text-[#e8ff6b]">{USER_COUNT}+ developers</em> sending email the right way.
+            Join{" "}
+            <em className="not-italic text-[#e8ff6b]">{USER_COUNT}+ developers</em>{" "}
+            sending email the right way.
           </h2>
           <p className="text-[15px] text-[#666] max-w-[440px] mx-auto mb-12 leading-[1.7] font-light relative z-10">
-            One install. One function call. 15 versions of polish and counting.
+            One install. One function call. Bulk sending included. 15 versions of polish and counting.
           </p>
           <div className="flex justify-center gap-4 flex-wrap relative z-10">
             <button
@@ -433,7 +707,7 @@ export default function EzyMailLanding() {
         <span className="font-['Syne',sans-serif] font-black text-[16px] text-[#f0ede8] normal-case tracking-[-0.02em]">
           Ezy<span className="text-[#e8ff6b]">Mail</span>
         </span>
-        <span>v{VERSION} · SMTP · TLS · ISC</span>
+        <span>v{VERSION} · SMTP · TLS · ISC · Bulk Sending</span>
         <span>Built by PRERAN001</span>
       </footer>
     </div>

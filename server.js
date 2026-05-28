@@ -2,7 +2,7 @@ const dotenv=require("dotenv")
 dotenv.config()
 const express = require("express");
 const { sendMail } = require("./lib/mailer");
-
+const {sendmailinseq} =require("./lib/custamizedmailer")
 const app = express();
 const cors = require('cors');
 app.use(cors()); 
@@ -27,7 +27,7 @@ app.get("/",(req,res)=>{
 })
 app.post("/send", async (req, res) => {
    try {
-      const { from, to, subject, html } = req.body || {};
+      const { from, to, subject, html,user,pass } = req.body || {};
       
       const content = html;
 
@@ -43,22 +43,60 @@ app.post("/send", async (req, res) => {
          to,
          subject,
          html: content,
+         user,
+         pass
          
       });
 
-      return res.json({        // ← add return
+      return res.json({        
          success: true,
          result
       });
 
    } catch (err) {
-      return res.status(500).json({    // ← add return
+      return res.status(500).json({    
          success: false,
          error: err?.message || String(err)
       });
    }
 });
 
+
+app.post("/sendmailinseq", async (req, res) => {
+   try {
+      const { from, to, subject, html ,user,pass} = req.body || {};
+      
+      const content = html;
+
+      if (!from || !to || !subject || !content) {
+         return res.status(400).json({
+            success: false,
+            error: "Missing required fields. Expected from, to, subject, and html."
+         });
+      }
+
+      const result = await sendmailinseq({
+         from,
+         to,
+         subject,
+         html: content,
+         user,
+         pass
+         
+      });
+
+      return res.json({        
+         success: true,
+         result
+      });
+
+   } catch (err) {
+      return res.status(500).json({    
+         success: false,
+         error: err?.message || String(err)
+      });
+   }
+});
 app.listen(3000, () => {
    console.log("Server running");
    console.log("v 2.0.5")
