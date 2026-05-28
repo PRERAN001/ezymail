@@ -28,8 +28,8 @@ const data = {
     from: "sender@gmail.com",
     subject: "Hello",
     html: "<p>Test</p>",
-    user: "ezymail0001@gmail.com",
-    pass: "yslt odui lauc cbsw"
+    user: "..",//requried
+    pass: "...."//required
 }
 
 sendseqmail(users, data, 100)

@@ -48,7 +48,7 @@ async function send(data) {
       }
    );
 
-    return readApiResponse(res);
+    return res.json()
 }
 
 
